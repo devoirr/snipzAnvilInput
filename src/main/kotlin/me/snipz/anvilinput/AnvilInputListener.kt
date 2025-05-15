@@ -19,8 +19,6 @@ class AnvilInputListener: Listener {
             val text = view.renameText
             if (text != null) {
                 data(text)
-                AnvilInput.clearData(event.whoClicked.uniqueId)
-
                 event.whoClicked.closeInventory()
                 return
             }
@@ -29,6 +27,13 @@ class AnvilInputListener: Listener {
 
     @EventHandler(ignoreCancelled = true)
     fun onInventoryClose(event: InventoryCloseEvent) {
+        AnvilInput.get(event.player as Player)?.let { data ->
+            event.inventory.setItem(0, null)
+            event.inventory.setItem(1, null)
+            event.inventory.setItem(2, null)
+        }
+
+        // Remove the data from the AnvilInput
         AnvilInput.clearData(event.player.uniqueId)
     }
 
